@@ -58,4 +58,4 @@ class ClassificationEvaluator(SimpleIndividualEvaluator):
         return accuracy_score(y_true=self.y, y_pred=y_pred)
 
     def classify_individual(self, individual):
-        return np.where(individual.execute(self.X) > CLASSIFICATION_THRESHOLD, 1, 0)
+        return np.where(individual.execute(self.X) > 20, 1, np.where(individual.execute(self.X) < -20, 2, 0))
