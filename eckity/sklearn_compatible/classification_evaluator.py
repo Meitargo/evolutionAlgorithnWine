@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 
 from eckity.evaluators.simple_individual_evaluator import SimpleIndividualEvaluator
 
-CLASSIFICATION_THRESHOLD = 0
+CLASSIFICATION_THRESHOLD = 15
 
 
 class ClassificationEvaluator(SimpleIndividualEvaluator):
@@ -58,4 +58,5 @@ class ClassificationEvaluator(SimpleIndividualEvaluator):
         return accuracy_score(y_true=self.y, y_pred=y_pred)
 
     def classify_individual(self, individual):
-        return np.where(individual.execute(self.X) > 20, 1, np.where(individual.execute(self.X) < -20, 2, 0))
+        return np.where(individual.execute(self.X) > CLASSIFICATION_THRESHOLD, 1,
+                        np.where(individual.execute(self.X) < -CLASSIFICATION_THRESHOLD, 2, 0))

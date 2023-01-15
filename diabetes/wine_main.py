@@ -30,7 +30,7 @@ from eckity.sklearn_compatible.classification_evaluator import ClassificationEva
 
 def main():
     """
-    In this experiment we use the sklearn diabetes dataset
+    In this experiment we use the sklearn wine dataset
     The goal of this experiment is to create a GP Tree that classifies cases of breast cancer
     """
     start_time = time()
@@ -40,7 +40,6 @@ def main():
     X, y = load_wine(return_X_y=True)
     # Automatically generate a terminal set.
     # Since there are 13 features, set terminal_set to: ['x0', 'x1', 'x2', ..., 'x12']
-    #TODO: check this, are should we write there 13 features?
     terminal_set = create_terminal_set(X)
 
     # Define function set
@@ -51,12 +50,12 @@ def main():
         Subpopulation(creators=RampedHalfAndHalfCreator(init_depth=(2, 4),
                                                         terminal_set=terminal_set,
                                                         function_set=function_set,
-                                                        bloat_weight=0.0001),
+                                                        bloat_weight=0.001),
                       population_size=1000,
                       evaluator=ClassificationEvaluator(),
                       # maximization problem (fitness is accuracy), so higher fitness is better
                       higher_is_better=True,
-                      elitism_rate=0.1,
+                      elitism_rate=0.3,
                       # genetic operators sequence to be applied in each generation
                       operators_sequence=[
                           SubtreeCrossover(probability=0.9, arity=2),
@@ -64,14 +63,14 @@ def main():
                       ],
                       selection_methods=[
                           # (selection method, selection probability) tuple
-                          (TournamentSelection(tournament_size=8, higher_is_better=True), 1)
+                          (TournamentSelection(tournament_size=6, higher_is_better=True), 1)
                       ]
                       ),
         breeder=SimpleBreeder(),
         max_workers=1,
-        max_generation=200,
+        max_generation=150,
         # optimal fitness is 1, evolution ("training") process will be finished when best fitness <= threshold
-        termination_checker=ThresholdFromTargetTerminationChecker(optimal=1, threshold=0.03),
+        termination_checker=ThresholdFromTargetTerminationChecker(optimal=1, threshold=0.02),
         statistics=BestAverageWorstSizeTreeStatistics()
     )
     # wrap the basic evolutionary algorithm with a sklearn-compatible classifier
