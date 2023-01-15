@@ -1,5 +1,5 @@
 """
-Solving a sklearn_mode problem created through scikit-learn's `load diabetes`.
+Solving a sklearn_mode problem created through scikit-learn's `load wine_evolutionary_algorithm`.
 This is an sklearn setting so we use `fit` and `predict`.
 """
 
